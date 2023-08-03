@@ -14,7 +14,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('verify', [\App\Http\Controllers\VerificationController::class, 'verify'])->name('verify');
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
