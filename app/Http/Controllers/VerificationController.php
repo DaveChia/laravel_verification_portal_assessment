@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\VerificationResult;
 use App\Http\Requests\StoreVerificationRequest;
+use Symfony\Component\HttpFoundation\Response;
 
 class VerificationController extends Controller
 {
@@ -54,11 +55,11 @@ class VerificationController extends Controller
                         'issuer' => $jsonFileDecoded->data->issuer->name,
                         'result' => $e->getMessage()
                     ],
-                ], 200);
+                ], Response::HTTP_OK);
             } else {
                 return response()->json([
                     'error' => 'unexpected_error',
-                ], 200);
+                ], Response::HTTP_OK);
             }
         }
         
@@ -67,7 +68,7 @@ class VerificationController extends Controller
                 'issuer' => $jsonFileDecoded->data->issuer->name,
                 'result' => 'verified'
             ],
-        ], 200);
+        ], Response::HTTP_OK);
     }
 
     private function checkJsonHasValidRecipient(\stdClass $json) : bool
