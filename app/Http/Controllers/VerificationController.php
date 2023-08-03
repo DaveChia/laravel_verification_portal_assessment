@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use App\Models\VerificationResult;
 
 class VerificationController extends Controller
 {
@@ -18,6 +19,8 @@ class VerificationController extends Controller
 
             $json_file_decoded = json_decode($json_file);
 
+            $verification_result = new VerificationResult;
+            $verification_result->file_type = 'JSON';
 
             if ($this->check_json_has_valid_recipient($json_file_decoded) === false) {
                 throw new \Exception('invalid_recipient');
@@ -31,6 +34,9 @@ class VerificationController extends Controller
                 throw new \Exception('invalid_signature');
             }
 
+            $verification_result->verification_result = 'verified';
+            $verification_result->save();
+
         } catch (\Exception $e) {
 
             $expected_error_results = [
@@ -40,6 +46,10 @@ class VerificationController extends Controller
             ];
 
             if (in_array($e->getMessage(), $expected_error_results)) {
+
+                $verification_result->verification_result = $e->getMessage();
+                $verification_result->save();
+
                 return response()->json([
                     'data' => [
                         'issuer' => $json_file_decoded->data->issuer->name,
