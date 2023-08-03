@@ -15,63 +15,63 @@ class VerificationController extends Controller
         ]);
 
         try {
-            $json_file = file_get_contents($validated['json_file']->getRealPath());
+            $jsonFile = file_get_contents($validated['json_file']->getRealPath());
 
-            $json_file_decoded = json_decode($json_file);
+            $jsonFileDecoded = json_decode($jsonFile);
 
-            $verification_result = new VerificationResult;
-            $verification_result->file_type = 'JSON';
+            $verificationResult = new VerificationResult;
+            $verificationResult->file_type = 'JSON';
 
-            if ($this->check_json_has_valid_recipient($json_file_decoded) === false) {
+            if ($this->checkJsonHasValidRecipient($jsonFileDecoded) === false) {
                 throw new \Exception('invalid_recipient');
             }
 
-            if ($this->check_json_has_valid_issuer($json_file_decoded) === false) {
+            if ($this->checkJsonHasValidIssuer($jsonFileDecoded) === false) {
                 throw new \Exception('invalid_issuer');
             }
 
-            if ($this->check_json_has_valid_signature($json_file_decoded) === false) {
+            if ($this->checkJsonHasValidSignature($jsonFileDecoded) === false) {
                 throw new \Exception('invalid_signature');
             }
 
-            $verification_result->verification_result = 'verified';
-            $verification_result->save();
+            $verificationResult->verification_result = 'verified';
+            $verificationResult->save();
 
         } catch (\Exception $e) {
 
-            $expected_error_results = [
+            $expectedErrorResults = [
                 'invalid_recipient',
                 'invalid_issuer',
                 'invalid_signature',
             ];
 
-            if (in_array($e->getMessage(), $expected_error_results)) {
+            if (in_array($e->getMessage(), $expectedErrorResults)) {
 
-                $verification_result->verification_result = $e->getMessage();
-                $verification_result->save();
+                $verificationResult->verification_result = $e->getMessage();
+                $verificationResult->save();
 
                 return response()->json([
                     'data' => [
-                        'issuer' => $json_file_decoded->data->issuer->name,
+                        'issuer' => $jsonFileDecoded->data->issuer->name,
                         'result' => $e->getMessage()
                     ],
                 ], 200);
             } else {
                 return response()->json([
                     'error' => 'unexpected_error',
-                ], 500);
+                ], 200);
             }
         }
         
         return response()->json([
             'data' => [
-                'issuer' => $json_file_decoded->data->issuer->name,
+                'issuer' => $jsonFileDecoded->data->issuer->name,
                 'result' => 'verified'
             ],
         ], 200);
     }
 
-    private function check_json_has_valid_recipient(\stdClass $json) : bool
+    private function checkJsonHasValidRecipient(\stdClass $json) : bool
     {
         if (!isset($json->data)) {
             return false;
@@ -95,7 +95,7 @@ class VerificationController extends Controller
         return true;
     }
 
-    private function check_json_has_valid_issuer(\stdClass $json, String $dns_type = 'TXT') : bool
+    private function checkJsonHasValidIssuer(\stdClass $json, String $dnsType = 'TXT') : bool
     {
         if (!isset($json->data)) {
             return false;
@@ -121,40 +121,40 @@ class VerificationController extends Controller
             return false;
         } 
 
-        $identity_proof_location = $json->data->issuer->identityProof->location; 
+        $identityProofLocation = $json->data->issuer->identityProof->location; 
 
-        $response = Http::get("https://dns.google/resolve?name=$identity_proof_location&type=$dns_type");
+        $response = Http::get("https://dns.google/resolve?name=$identityProofLocation&type=$dnsType");
 
         if ($response->status() !== 200) {
             return false;
         }
 
-        $response_json = $response->json();
+        $responseJson = $response->json();
 
-        $ethereum_wallet_address = $json->data->issuer->identityProof->key;
+        $ethereumWalletAddress = $json->data->issuer->identityProof->key;
 
-        $response_answers = $response_json['Answer'];
+        $responseAnswers = $responseJson['Answer'];
 
-        $ethereum_wallet_address_exists = false;
+        $ethereumWalletAddressExists = false;
 
-        foreach ($response_answers as $answer) {
+        foreach ($responseAnswers as $answer) {
 
-            if (str_contains($answer['data'], $ethereum_wallet_address)) {
-                $ethereum_wallet_address_exists = true;
+            if (str_contains($answer['data'], $ethereumWalletAddress)) {
+                $ethereumWalletAddressExists = true;
                 break;
             }
         }
 
-        if ($ethereum_wallet_address_exists = false) {
+        if ($ethereumWalletAddressExists = false) {
             return false;
         }
         
         return true;
     }
 
-    public function check_json_has_valid_signature(\stdClass $json) : bool
+    public function checkJsonHasValidSignature(\stdClass $json) : bool
     {    
-        $associated_data_values = [
+        $associatedDataValues = [
             "id" => $json->data->id,
             "name" => $json->data->name,
             "recipient.name" => $json->data->recipient->name,
@@ -166,22 +166,22 @@ class VerificationController extends Controller
             "issued" => $json->data->issued,
         ];
 
-        $computed_hashes = [];
+        $computedHashes = [];
 
-        foreach ($associated_data_values as $key => $value) {
+        foreach ($associatedDataValues as $key => $value) {
             
-            $key_value_pair_in_object = (object) array($key => $value);
+            $keyValuePairInObject = (object) array($key => $value);
 
-            $key_value_pair_in_object_json_encoded = json_encode($key_value_pair_in_object);
+            $keyValuePairInObject_json_encoded = json_encode($keyValuePairInObject);
 
-            $computed_hashes[] = hash('sha256', $key_value_pair_in_object_json_encoded);
+            $computedHashes[] = hash('sha256', $keyValuePairInObject_json_encoded);
         }
 
-        sort($computed_hashes);
+        sort($computedHashes);
 
-        $alphabetically_arranged_computed_hash = hash('sha256', json_encode($computed_hashes));
+        $alphabeticallyArrangedComputedHash = hash('sha256', json_encode($computedHashes));
 
-        if ($json->signature->targetHash !== $alphabetically_arranged_computed_hash) {
+        if ($json->signature->targetHash !== $alphabeticallyArrangedComputedHash) {
             return false;
         }
 
