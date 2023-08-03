@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use App\Models\VerificationResult;
+use App\Http\Requests\StoreVerificationRequest;
 
 class VerificationController extends Controller
 {
-    public function verify(Request $request)
+    public function verify(StoreVerificationRequest $request)
     {
-        $validated = $request->validate([
-            'json_file' => 'required|file|mimetypes:application/json|max:2000',
-        ]);
+        $validated = $request->validated();
 
         try {
             $jsonFile = file_get_contents($validated['json_file']->getRealPath());
