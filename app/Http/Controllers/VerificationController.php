@@ -4,14 +4,14 @@ namespace App\Http\Controllers;
 
 use App\DataTransferObjects\JsonDocument;
 use App\Models\VerificationResult;
-use App\Http\Requests\StoreVerificationRequest;
+use App\Http\Requests\FileVerificationRequest;
 use App\Exceptions\DocumentVerificationException;
 use App\Exceptions\MisformedDataException;
 use Symfony\Component\HttpFoundation\Response;
 
 class VerificationController extends Controller
 {
-    public function verify(StoreVerificationRequest $request)
+    public function verify(FileVerificationRequest $request)
     {
         $validated = $request->validated();
 
@@ -22,7 +22,7 @@ class VerificationController extends Controller
         $verificationResult->file_type = 'JSON';
 
         try {
-            $jsonDocument = new JsonDocument($validated['json_file']);
+            $jsonDocument = new JsonDocument($validated['file']);
        
             if ($jsonDocument->verifyDocumentHasValidRecipient() === false) {
                 throw new DocumentVerificationException('invalid_recipient');
