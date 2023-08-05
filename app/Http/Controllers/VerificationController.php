@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\DataTransferObjects\JsonDocument;
 use App\Models\VerificationResult;
 use App\Http\Requests\StoreVerificationRequest;
