@@ -2,7 +2,9 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -51,6 +53,19 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof AuthenticationException) {
+
+            return response()->json([
+                'error' => 'unauthenticated',
+            ], Response::HTTP_UNAUTHORIZED);
+        }
+
+        if ($exception instanceof ValidationException) {
+            // With the $exception instanceof ValidationException here,
+            // We want to always return validation errors with 422 status code
+            return parent::render($request, $exception);
+        }
+
         return response()->json([
             'error' => 'unexpected_error',
         ], Response::HTTP_INTERNAL_SERVER_ERROR);

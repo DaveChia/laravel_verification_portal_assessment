@@ -24,8 +24,9 @@ class AuthController extends Controller
 
             $user = new User;
             $user->name = $validated['name'];
-            $user->email = $validated['name'];
-            $user->password = Hash::make($validated['email']);
+            $user->email = $validated['email'];
+            $user->password = Hash::make($validated['password']);
+            $user->save();
 
         } catch (\Exception $e) {
             return response()->json([
@@ -48,7 +49,7 @@ class AuthController extends Controller
     public function login(LoginUserRequest $request)
     {
         try {
-            $validated = $request->validated();
+            $request->validated();
 
             if(!Auth::attempt($request->only(['email', 'password']))){
                 return response()->json([
