@@ -50,9 +50,6 @@ class VerificationController extends Controller
 
         } catch (\Exception $e) {
 
-            $verificationResult->verification_result = $e->getMessage();
-            $verificationResult->save();
-
             return response()->json([
                 'error' => 'unexpected_error',
             ], Response::HTTP_OK);
