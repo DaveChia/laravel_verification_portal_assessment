@@ -50,14 +50,8 @@ class VerificationController extends Controller
 
         } catch (MisformedDataException $e) {
 
-            $verificationResult->verification_result = $e->getMessage();
-            $verificationResult->save();
-
             return response()->json([
-                'data' => [
-                    'issuer' => $jsonDocument->issuerName,
-                    'result' => 'misformed_data'
-                ],
+                'error' => 'misformed_data'
             ], Response::HTTP_OK);
 
         } catch (\Exception $e) {
