@@ -15,7 +15,10 @@ class VerificationController extends Controller
     {
         $validated = $request->validated();
 
+        $userId = auth()->id();
+
         $verificationResult = new VerificationResult;
+        $verificationResult->user_id = $userId;
         $verificationResult->file_type = 'JSON';
 
         try {
