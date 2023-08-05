@@ -52,13 +52,13 @@ class VerificationController extends Controller
 
             return response()->json([
                 'error' => 'misformed_data'
-            ], Response::HTTP_OK);
+            ], Response::HTTP_BAD_REQUEST);
 
         } catch (\Exception $e) {
 
             return response()->json([
                 'error' => 'unexpected_error',
-            ], Response::HTTP_OK);
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         $verificationResult->verification_result = 'verified';
