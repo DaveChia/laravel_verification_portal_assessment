@@ -15,6 +15,7 @@ class CreateVerificationResultsTable extends Migration
     {
         Schema::create('verification_results', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->index();
             $table->string('file_type', 20)->index();
             $table->string('verification_result', 255)->index();
             $table->timestamps();
