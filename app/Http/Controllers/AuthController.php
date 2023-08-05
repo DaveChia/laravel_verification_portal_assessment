@@ -15,7 +15,7 @@ class AuthController extends Controller
     /**
      * Create User
      * @param Request $request
-     * @return User 
+     * @return User
      */
     public function register(RegisterNewUserRequest $request)
     {
@@ -26,8 +26,6 @@ class AuthController extends Controller
             $user->name = $validated['name'];
             $user->email = $validated['name'];
             $user->password = Hash::make($validated['email']);
-
-
 
         } catch (\Exception $e) {
             return response()->json([
@@ -60,7 +58,6 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request->email)->first();
-
 
         } catch (\Exception $e) {
             return response()->json([

@@ -23,7 +23,7 @@ class VerificationController extends Controller
 
         try {
             $jsonDocument = new JsonDocument($validated['file']);
-       
+
             if ($jsonDocument->verifyDocumentHasValidRecipient() === false) {
                 throw new DocumentVerificationException('invalid_recipient');
             }
@@ -63,7 +63,7 @@ class VerificationController extends Controller
 
         $verificationResult->verification_result = 'verified';
         $verificationResult->save();
-        
+
         return response()->json([
             'data' => [
                 'issuer' => $jsonDocument->issuerName,
