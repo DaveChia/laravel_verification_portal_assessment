@@ -26,7 +26,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'result' => false,
-                'message' => 'unexpected_error'
+                'error' => 'unexpected_error'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
@@ -44,7 +44,7 @@ class AuthController extends Controller
             if(!Auth::attempt($request->only(['email', 'password']))){
                 return response()->json([
                     'result' => false,
-                    'message' => 'Email & Password does not match with our record.',
+                    'error' => 'invalid_credentials',
                 ], Response::HTTP_UNAUTHORIZED);
             }
 
@@ -53,7 +53,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'message' => 'unexpected_error'
+                'error' => 'unexpected_error'
             ], RESPONSE::HTTP_INTERNAL_SERVER_ERROR);
         }
 
