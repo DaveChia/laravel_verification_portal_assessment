@@ -4,7 +4,7 @@ namespace Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 
-class Sha256HashingTest extends TestCase
+class DocumentVerificationTest extends TestCase
 {
     public function testSha256HashingMethod()
     {
@@ -15,5 +15,11 @@ class Sha256HashingTest extends TestCase
         $hashed_data = hash('sha256', $data_to_hash);
 
         $this->assertEquals($target_hash, $hashed_data);
+    }
+
+    public function test_example()
+    {
+
+        $this->assertTrue(true);
     }
 }
