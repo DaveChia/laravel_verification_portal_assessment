@@ -1,5 +1,6 @@
 REFACTORING
 1. Improve app\DataTransferObjects\JsonDocument's construct method so that I can use a more elegant way to check whether the uploaded JSON file object has the correct and required parameters.
+2. Improve and refactor app\DataTransferObjects\Service\VerificationService's verifyDocumentHasValidRecipient method to check whether the data has valid recipient data. Instead of doing a if statement, use a better and elegant way.
 
 
 
@@ -9,6 +10,8 @@ IMPROVEMENTS
 3. Add error logging to the portal, for example
     1. Logging exceptions in a database table
     2. Integrate with 3rd Party APIs to send email or Slack notifications to notify us of critical exceptions that need immediate attention.
+4. Implement roles and permissions authorization module to only allow users with the correct permissions to access the Document Verification functionalies.
+
 
 
 
