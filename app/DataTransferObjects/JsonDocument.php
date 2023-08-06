@@ -2,7 +2,7 @@
 
 namespace App\DataTransferObjects;
 
-use App\DataTransferObjects\VerificationObject;
+use App\DataTransferObjects\Base\VerificationObject;
 use App\Exceptions\MisformedDataException;
 use Illuminate\Http\UploadedFile;
 

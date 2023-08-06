@@ -1,6 +1,6 @@
 <?php
 
-namespace App\DataTransferObjects;
+namespace App\DataTransferObjects\Base;
 
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +24,8 @@ class VerificationObject
 
     public function verifyJsonHasValidIssuer(String $dnsType = 'TXT') : bool
     {
-      
-        $identityProofLocation = $this->issuerIdentityProofLocation; 
+
+        $identityProofLocation = $this->issuerIdentityProofLocation;
 
         $response = Http::get("https://dns.google/resolve?name=$identityProofLocation&type=$dnsType");
 
@@ -37,7 +37,7 @@ class VerificationObject
 
         $ethereumWalletAddress = $this->issuerIdentityProofKey;
 
-        
+
         $responseAnswers = $responseJson['Answer'];
 
         $ethereumWalletAddressExists = false;
@@ -55,12 +55,12 @@ class VerificationObject
 
             return false;
         }
-        
+
         return true;
     }
 
     public function verifyJsonHasValidSignature() : bool
-    {    
+    {
         $associatedDataValues = [
             "id" => $this->id,
             "name" => $this->name,
@@ -76,7 +76,7 @@ class VerificationObject
         $computedHashes = [];
 
         foreach ($associatedDataValues as $key => $value) {
-            
+
             $keyValuePairInObject = (object) array($key => $value);
 
             $keyValuePairInObject_json_encoded = json_encode($keyValuePairInObject);
