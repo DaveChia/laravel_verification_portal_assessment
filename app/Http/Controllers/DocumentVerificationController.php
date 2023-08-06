@@ -9,9 +9,9 @@ use App\Exceptions\DocumentVerificationException;
 use App\Exceptions\MisformedDataException;
 use Symfony\Component\HttpFoundation\Response;
 
-class VerificationController extends Controller
+class DocumentVerificationController extends Controller
 {
-    public function verify(FileVerificationRequest $request)
+    public function __invoke(FileVerificationRequest $request)
     {
         $validated = $request->validated();
 
