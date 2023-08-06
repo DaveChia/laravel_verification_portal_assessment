@@ -19,12 +19,8 @@ class JsonDocument extends VerificationObject
     public string $signatureTargetHash;
     public string $issuedTimestamp;
 
-    public function __construct(UploadedFile $uploaded_json_file)
+    public function __construct(\stdClass $jsonFileDecoded)
     {
-        $jsonFile = file_get_contents($uploaded_json_file->getRealPath());
-
-        $jsonFileDecoded = json_decode($jsonFile);
-
         if (!isset($jsonFileDecoded->data)) {
             throw new MisformedDataException('Missing data key to form JsonDocument');
         }

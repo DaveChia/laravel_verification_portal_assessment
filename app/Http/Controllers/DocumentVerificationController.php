@@ -22,7 +22,11 @@ class DocumentVerificationController extends Controller
         $verificationResult->file_type = 'JSON';
 
         try {
-            $jsonDocument = new JsonDocument($validated['file']);
+            $jsonFile = file_get_contents($validated['file']->getRealPath());
+
+            $jsonFileDecoded = json_decode($jsonFile);
+
+            $jsonDocument = new JsonDocument($jsonFileDecoded);
 
             if ($jsonDocument->verifyDocumentHasValidRecipient() === false) {
                 throw new DocumentVerificationException('invalid_recipient');
