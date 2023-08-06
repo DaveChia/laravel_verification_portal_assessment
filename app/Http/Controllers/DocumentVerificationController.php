@@ -11,7 +11,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DocumentVerificationController extends Controller
 {
-    public function __invoke(FileVerificationRequest $request)
+    /**
+     * Verify an uploaded Document as per Accredify's requirements
+     *
+     * @return Response
+     * @throws DocumentVerificationException
+     */
+    public function __invoke(FileVerificationRequest $request) : Response
     {
         $validated = $request->validated();
 
@@ -32,11 +38,11 @@ class DocumentVerificationController extends Controller
                 throw new DocumentVerificationException('invalid_recipient');
             }
 
-            if ($jsonDocument->verifyJsonHasValidIssuer() === false) {
+            if ($jsonDocument->verifyDocumentHasValidIssuer() === false) {
                 throw new DocumentVerificationException('invalid_issuer');
             }
 
-            if ($jsonDocument->verifyJsonHasValidSignature() === false) {
+            if ($jsonDocument->verifyDocumentHasValidSignature() === false) {
                 throw new DocumentVerificationException('invalid_signature');
             }
 

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DocumentVerificationTest extends TestCase
 {
-    public function testSha256HashingMethod()
+    public function testSha256HashingMethod() : void
     {
         $target_hash = '8d79f393cc294fd3daca0402209997db5ff8a2ad1a498702f0956952677881ae';
 
@@ -20,7 +20,7 @@ class DocumentVerificationTest extends TestCase
         $this->assertEquals($target_hash, $hashed_data);
     }
 
-    public function testGoogleDnsRetrievalApi()
+    public function testGoogleDnsRetrievalApi() : void
     {
         $identityProofLocation = 'ropstore.accredify.io';
         $dnsType = 'TXT';
@@ -30,7 +30,7 @@ class DocumentVerificationTest extends TestCase
         $this->assertEquals(Response::HTTP_OK, $response->status());
     }
 
-    public function testJsonDocumentCreation()
+    public function testJsonDocumentCreation() : void
     {
         $json_file_to_test = json_decode(
             '{
@@ -63,7 +63,7 @@ class DocumentVerificationTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testJsonDocumentHasValidRecipient()
+    public function testJsonDocumentHasValidRecipient() : void
     {
         $json_file_to_test = json_decode(
             '{
@@ -96,7 +96,7 @@ class DocumentVerificationTest extends TestCase
         $this->assertTrue($jsonDocument->verifyDocumentHasValidRecipient());
     }
 
-    public function testJsonDocumentHasValidIssuer()
+    public function testJsonDocumentHasValidIssuer() : void
     {
         $json_file_to_test = json_decode(
             '{
@@ -126,10 +126,10 @@ class DocumentVerificationTest extends TestCase
 
         $jsonDocument = new JsonDocument($json_file_to_test);
 
-        $this->assertTrue($jsonDocument->verifyJsonHasValidIssuer());
+        $this->assertTrue($jsonDocument->verifyDocumentHasValidIssuer());
     }
 
-    public function testJsonDocumentHasValidSignature()
+    public function testJsonDocumentHasValidSignature() : void
     {
         $json_file_to_test = json_decode(
             '{
@@ -159,6 +159,6 @@ class DocumentVerificationTest extends TestCase
 
         $jsonDocument = new JsonDocument($json_file_to_test);
 
-        $this->assertTrue($jsonDocument->verifyJsonHasValidSignature());
+        $this->assertTrue($jsonDocument->verifyDocumentHasValidSignature());
     }
 }

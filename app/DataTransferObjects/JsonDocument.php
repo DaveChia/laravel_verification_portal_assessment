@@ -2,10 +2,15 @@
 
 namespace App\DataTransferObjects;
 
-use App\DataTransferObjects\Base\VerificationObject;
+use App\DataTransferObjects\Service\VerificationService;
 use App\Exceptions\MisformedDataException;
 
-class JsonDocument extends VerificationObject
+/**
+ * Sets up a JsonDocument class for data verification purpose
+ *
+ * @throws MisformedDataException
+ */
+class JsonDocument extends VerificationService
 {
     public string $id;
     public string $name;

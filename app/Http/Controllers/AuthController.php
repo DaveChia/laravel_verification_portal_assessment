@@ -12,12 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    /**
-     * Create User
-     * @param Request $request
-     * @return User
-     */
-    public function register(RegisterNewUserRequest $request)
+    public function register(RegisterNewUserRequest $request) : Response
     {
         try {
             $validated = $request->validated();
@@ -41,12 +36,7 @@ class AuthController extends Controller
         ], Response::HTTP_CREATED);
     }
 
-    /**
-     * Login The User
-     * @param Request $request
-     * @return User
-     */
-    public function login(LoginUserRequest $request)
+    public function login(LoginUserRequest $request) : Response
     {
         try {
             $request->validated();

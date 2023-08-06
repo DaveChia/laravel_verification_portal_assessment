@@ -1,11 +1,11 @@
 <?php
 
-namespace App\DataTransferObjects\Base;
+namespace App\DataTransferObjects\Service;
 
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
-class VerificationObject
+class VerificationService
 {
     public function verifyDocumentHasValidRecipient() : bool
     {
@@ -22,7 +22,13 @@ class VerificationObject
         return true;
     }
 
-    public function verifyJsonHasValidIssuer(String $dnsType = 'TXT') : bool
+    /**
+     * Verify whether a document has a valid issuer by verifying it with google DNS data
+     *
+     * @return bool
+     * @throws Exception
+     */
+    public function verifyDocumentHasValidIssuer(String $dnsType = 'TXT') : bool
     {
 
         $identityProofLocation = $this->issuerIdentityProofLocation;
@@ -59,7 +65,7 @@ class VerificationObject
         return true;
     }
 
-    public function verifyJsonHasValidSignature() : bool
+    public function verifyDocumentHasValidSignature() : bool
     {
         $associatedDataValues = [
             "id" => $this->id,

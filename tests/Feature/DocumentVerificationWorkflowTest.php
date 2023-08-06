@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class DocumentVerificationWorkflowTest extends TestCase
 {
-    public function testJsonDocumentVerificationWorkflow()
+    public function testJsonDocumentVerificationWorkflow() : void
     {
         $expected_verification_code = 'verified';
 
@@ -45,13 +45,13 @@ class DocumentVerificationWorkflowTest extends TestCase
             exit;
         }
 
-        if ($jsonDocument->verifyJsonHasValidIssuer() === false) {
+        if ($jsonDocument->verifyDocumentHasValidIssuer() === false) {
 
             $this->assertEquals($expected_verification_code, 'invalid_issuer');
             exit;
         }
 
-        if ($jsonDocument->verifyJsonHasValidSignature() === false) {
+        if ($jsonDocument->verifyDocumentHasValidSignature() === false) {
 
             $this->assertEquals($expected_verification_code, 'invalid_signature');
             exit;
