@@ -20,6 +20,16 @@ class DocumentVerificationTest extends TestCase
         $this->assertEquals($target_hash, $hashed_data);
     }
 
+    public function testGoogleDnsRetrievalApi()
+    {
+        $identityProofLocation = 'ropstore.accredify.io';
+        $dnsType = 'TXT';
+
+        $response = Http::get("https://dns.google/resolve?name=$identityProofLocation&type=$dnsType");
+
+        $this->assertEquals(Response::HTTP_OK, $response->status());
+    }
+
     public function testJsonDocumentCreation()
     {
         $json_file_to_test = json_decode(
@@ -84,16 +94,6 @@ class DocumentVerificationTest extends TestCase
         $jsonDocument = new JsonDocument($json_file_to_test);
 
         $this->assertTrue($jsonDocument->verifyDocumentHasValidRecipient());
-    }
-
-    public function testGoogleDnsRetrievalApi()
-    {
-        $identityProofLocation = 'ropstore.accredify.io';
-        $dnsType = 'TXT';
-
-        $response = Http::get("https://dns.google/resolve?name=$identityProofLocation&type=$dnsType");
-
-        $this->assertTrue($response->status() === Response::HTTP_OK);
     }
 
     public function testJsonDocumentHasValidIssuer()
