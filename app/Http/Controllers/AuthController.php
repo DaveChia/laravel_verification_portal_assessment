@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginUserRequest;
 use App\Http\Requests\RegisterNewUserRequest;
-use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
-    public function register(RegisterNewUserRequest $request) : Response
+    public function register(RegisterNewUserRequest $request): Response
     {
         try {
             $validated = $request->validated();
@@ -26,7 +26,7 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'result' => false,
-                'error' => 'unexpected_error'
+                'error' => 'unexpected_error',
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
 
@@ -36,12 +36,12 @@ class AuthController extends Controller
         ], Response::HTTP_CREATED);
     }
 
-    public function login(LoginUserRequest $request) : Response
+    public function login(LoginUserRequest $request): Response
     {
         try {
             $request->validated();
 
-            if(!Auth::attempt($request->only(['email', 'password']))){
+            if (!Auth::attempt($request->only(['email', 'password']))) {
                 return response()->json([
                     'result' => false,
                     'error' => 'invalid_credentials',
@@ -53,14 +53,14 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
-                'error' => 'unexpected_error'
+                'error' => 'unexpected_error',
             ], RESPONSE::HTTP_INTERNAL_SERVER_ERROR);
         }
 
         return response()->json([
             'result' => true,
             'message' => 'User Logged In Successfully',
-            'token' => $user->createToken("API TOKEN")->plainTextToken
+            'token' => $user->createToken("API TOKEN")->plainTextToken,
         ], RESPONSE::HTTP_OK);
     }
 }

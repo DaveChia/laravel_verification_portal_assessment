@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class VerificationService
 {
-    public function verifyDocumentHasValidRecipient() : bool
+    public function verifyDocumentHasValidRecipient(): bool
     {
         if (!isset($this->recipient->name) ||
             !isset($this->recipient->email) ||
@@ -28,7 +28,7 @@ class VerificationService
      * @return bool
      * @throws Exception
      */
-    public function verifyDocumentHasValidIssuer(String $dnsType = 'TXT') : bool
+    public function verifyDocumentHasValidIssuer(String $dnsType = 'TXT'): bool
     {
 
         $identityProofLocation = $this->issuerIdentityProofLocation;
@@ -42,7 +42,6 @@ class VerificationService
         $responseJson = $response->json();
 
         $ethereumWalletAddress = $this->issuerIdentityProofKey;
-
 
         $responseAnswers = $responseJson['Answer'];
 
@@ -65,7 +64,7 @@ class VerificationService
         return true;
     }
 
-    public function verifyDocumentHasValidSignature() : bool
+    public function verifyDocumentHasValidSignature(): bool
     {
         $associatedDataValues = [
             "id" => $this->id,

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\DataTransferObjects\JsonDocument;
-use App\Models\VerificationResult;
-use App\Http\Requests\FileVerificationRequest;
 use App\Exceptions\DocumentVerificationException;
 use App\Exceptions\MisformedDataException;
+use App\Http\Requests\FileVerificationRequest;
+use App\Models\VerificationResult;
 use Symfony\Component\HttpFoundation\Response;
 
 class DocumentVerificationController extends Controller
@@ -17,7 +17,7 @@ class DocumentVerificationController extends Controller
      * @return Response
      * @throws DocumentVerificationException
      */
-    public function __invoke(FileVerificationRequest $request) : Response
+    public function __invoke(FileVerificationRequest $request): Response
     {
         $validated = $request->validated();
 
@@ -54,14 +54,14 @@ class DocumentVerificationController extends Controller
             return response()->json([
                 'data' => [
                     'issuer' => $jsonDocument->issuerName,
-                    'result' => $e->getMessage()
+                    'result' => $e->getMessage(),
                 ],
             ], Response::HTTP_OK);
 
         } catch (MisformedDataException $e) {
 
             return response()->json([
-                'error' => 'misformed_data'
+                'error' => 'misformed_data',
             ], Response::HTTP_BAD_REQUEST);
 
         } catch (\Exception $e) {
@@ -77,7 +77,7 @@ class DocumentVerificationController extends Controller
         return response()->json([
             'data' => [
                 'issuer' => $jsonDocument->issuerName,
-                'result' => 'verified'
+                'result' => 'verified',
             ],
         ], Response::HTTP_OK);
     }

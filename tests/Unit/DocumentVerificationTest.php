@@ -4,12 +4,12 @@ namespace Tests\Unit;
 
 use App\DataTransferObjects\JsonDocument;
 use Illuminate\Support\Facades\Http;
-use Tests\TestCase;
 use Symfony\Component\HttpFoundation\Response;
+use Tests\TestCase;
 
 class DocumentVerificationTest extends TestCase
 {
-    public function testSha256HashingMethod() : void
+    public function testSha256HashingMethod(): void
     {
         $target_hash = '8d79f393cc294fd3daca0402209997db5ff8a2ad1a498702f0956952677881ae';
 
@@ -20,7 +20,7 @@ class DocumentVerificationTest extends TestCase
         $this->assertEquals($target_hash, $hashed_data);
     }
 
-    public function testGoogleDnsRetrievalApi() : void
+    public function testGoogleDnsRetrievalApi(): void
     {
         $identityProofLocation = 'ropstore.accredify.io';
         $dnsType = 'TXT';
@@ -30,7 +30,7 @@ class DocumentVerificationTest extends TestCase
         $this->assertEquals(Response::HTTP_OK, $response->status());
     }
 
-    public function testJsonDocumentCreation() : void
+    public function testJsonDocumentCreation(): void
     {
         $json_file_to_test = json_decode(
             '{
@@ -63,7 +63,7 @@ class DocumentVerificationTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testJsonDocumentHasValidRecipient() : void
+    public function testJsonDocumentHasValidRecipient(): void
     {
         $json_file_to_test = json_decode(
             '{
@@ -96,7 +96,7 @@ class DocumentVerificationTest extends TestCase
         $this->assertTrue($jsonDocument->verifyDocumentHasValidRecipient());
     }
 
-    public function testJsonDocumentHasValidIssuer() : void
+    public function testJsonDocumentHasValidIssuer(): void
     {
         $json_file_to_test = json_decode(
             '{
@@ -129,7 +129,7 @@ class DocumentVerificationTest extends TestCase
         $this->assertTrue($jsonDocument->verifyDocumentHasValidIssuer());
     }
 
-    public function testJsonDocumentHasValidSignature() : void
+    public function testJsonDocumentHasValidSignature(): void
     {
         $json_file_to_test = json_decode(
             '{

@@ -7,7 +7,7 @@ use Tests\TestCase;
 
 class DocumentVerificationWorkflowTest extends TestCase
 {
-    public function testJsonDocumentVerificationWorkflow() : void
+    public function testJsonDocumentVerificationWorkflow(): void
     {
         $expected_verification_code = 'verified';
 
